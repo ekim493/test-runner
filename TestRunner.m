@@ -31,6 +31,9 @@ classdef TestRunner
         InputNames cell % Names of inputs (to display for debugging). Set automatically. Will be 'input#' if there was no name.
         OutputNames cell % Add optional output names to variables instead of the default 'output#'.
 
+        % Add message on failure
+        FailureMessage char = ''
+
         % The following are properties set automatically. Do not modify unless you understand its purpose.
         TestCase % The testCase object to perform verifications on.
         Inputs % The inputs to the function being tested.

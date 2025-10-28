@@ -22,7 +22,8 @@ function [hasPassed, msg] = checkPlots(obj)
 % Will assume that the lower number figure is the solution plot.
 figures = findobj('Type', 'figure');
 figures = figures(~cellfun(@isempty, {figures.Children})); % Only extract figures with actual plots
-figures = sort(figures); % Sort by number
+[~, ind] = sort([figures.Number]); % Sort by number
+figures = figures(ind);
 if numel(figures) == 0
     error('TestRunner:noPlot', 'No figures were detected. Was the test case set up properly?');
 elseif numel(figures) < 2 % Assume solution plot was created
@@ -93,9 +94,14 @@ for i = 1:numel(cAxes)
     cMap = TestRunner.mapPlot(cAxesPlots);
 
     if ~isequal(sMap, cMap)
-        msg = 'Incorrect data and/or style in plot(s)';
-        if numel(sMap) ~= numel(cMap)
-            msg = sprintf('%s\nIn at least 1 plot, %d line(s) and/or point(s) were expected, but your solution had %d.', msg, numel(cMap), numel(sMap));
+        if numEntries(sMap) ~= numEntries(cMap)
+            msg = sprintf('Incorrect number of features in plot(s). (Expected: %d, Actual: %d)', numEntries(cMap), numEntries(sMap));
+        else
+            if ~isequal(keys(sMap), keys(cMap))
+                msg = sprintf('Incorrect data in plot(s).');
+            else
+                msg = sprintf('Incorrect style in plot(s).');
+            end
         end
         % Check if any points are outside x and y bounds
         xLim = sAxes(i).XLim;
@@ -139,15 +145,18 @@ for i = 1:numel(cAxes)
         if isempty(sAxes(i).Legend)
             msg = sprintf('%s\nMissing legend(s)', msg);
         else
-            if ~strcmp(char(sAxes(i).Legend.String), char(cAxes(i).Legend.String))
+            if ~isequal(sAxes(i).Legend.String, cAxes(i).Legend.String)
                 msg = sprintf('%s\nIncorrect legend text(s)', msg);
             end
-            if ~strcmp(char(sAxes(i).Legend.Location), char(cAxes(i).Legend.Location))
+            if ~strcmp(sAxes(i).Legend.Location, cAxes(i).Legend.Location)
                 msg = sprintf('%s\nIncorrect legend location(s)', msg);
             end
         end
+    else
+        if ~isempty(sAxes(i).Legend)
+            msg = sprintf('%s\nUnexpected legend(s)', msg);
+        end
     end
-
     if ~isempty(msg)
         break
     end

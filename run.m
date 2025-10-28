@@ -65,6 +65,11 @@ elseif obj.RunCheckCalls
     obj.checkCalls(studentFunction);
 end
 
+% Add failure message to diagnostics
+if ~isempty(obj.FailureMessage)
+    obj.TestCase.onFailure(sprintf('FailureMessage:<%s>', obj.FailureMessage))
+end
+
 % Create string of input variables and add to diagnostics
 inputStr = '';
 for i = 1:length(obj.Inputs)
@@ -156,15 +161,17 @@ if studentIsFunction
 else
     % Run as script.
     [outputNames, outputValues] = obj.runScript(studentFunction);
-    varsNoExist = ~ismember(solnNames, outputNames);
-    if any(varsNoExist)
-        vars = strjoin(solnNames(varsNoExist), ', ');
-        error('HWStudent:varNotAssigned', 'The following variables were not found: %s.', vars);
-    else
-        % Extract only the variables we care about
-        varsOfInterest = ismember(outputNames, solnNames);
-        outputNames = outputNames(varsOfInterest);
-        outputValues = outputValues(varsOfInterest);
+    if obj.RunCheckAllEqual
+        varsNoExist = ~ismember(solnNames, outputNames);
+        if any(varsNoExist)
+            vars = strjoin(solnNames(varsNoExist), ', ');
+            error('HWStudent:varNotAssigned', 'The following variables were not found: %s.', vars);
+        else
+            % Extract only the variables we care about
+            varsOfInterest = ismember(outputNames, solnNames);
+            outputNames = outputNames(varsOfInterest);
+            outputValues = outputValues(varsOfInterest);
+        end
     end
 end
 
