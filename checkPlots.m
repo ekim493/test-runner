@@ -97,7 +97,10 @@ for i = 1:numel(cAxes)
         if numEntries(sMap) ~= numEntries(cMap)
             msg = sprintf('Incorrect number of features in plot(s). (Expected: %d, Actual: %d)', numEntries(cMap), numEntries(sMap));
         else
-            if ~isequal(keys(sMap), keys(cMap))
+            % Kind of hacky, but change keys into strings to sort and compare
+            sKeys = sort(cellfun(@(x) num2str(x), keys(sMap), 'UniformOutput', false));
+            cKeys = sort(cellfun(@(x) num2str(x), keys(cMap), 'UniformOutput', false));
+            if ~isequal(sKeys, cKeys)
                 msg = sprintf('Incorrect data in plot(s).');
             else
                 msg = sprintf('Incorrect style in plot(s).');
