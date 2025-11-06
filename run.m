@@ -129,6 +129,13 @@ else
     solnTextFile = [file, '_soln', ext];
 end
 
+% Check if solution has files still opened
+stillOpen = openedFiles();
+if ~isempty(stillOpen)
+    fclose all;
+    warning('Solution function has files left open. Ensure they are all fclosed.')
+end
+
 % Run student code
 if obj.RunCheckPlots
     figure;
@@ -181,6 +188,8 @@ if obj.RunCheckAllEqual
 end
 if obj.RunCheckFilesClosed
     obj.checkFilesClosed();
+else
+    fclose all; % Close all files to not interrupt next iteration
 end
 if ~isempty(obj.RunCheckTextFiles)
     obj.checkTextFiles(obj.RunCheckTextFiles, solnTextFile);

@@ -114,13 +114,6 @@ end
 if out(end) == newline
     out(end) = [];
 end
-if opts.cap > 0
-    new = strfind(out, newline);
-    if numel(new) > opts.cap
-        out = out(1:new(opts.cap));
-        out = [out '<strong>Additional lines have been suppressed.</strong>'];
-    end
-end
 % Parse string
 if opts.parse
     % Add padding if its not there currently
@@ -140,5 +133,13 @@ if opts.parse
         pref = sprintf('(%dx%d %s):', r, c, class(in));
     end
     out = sprintf('%s\n%s', pref, out);
+end
+% Cap output
+if opts.cap > 0
+    new = strfind(out, newline);
+    if numel(new) > opts.cap
+        out = out(1:new(opts.cap));
+        out = [out '<strong>Additional lines have been suppressed.</strong>'];
+    end
 end
 end

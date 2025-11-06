@@ -9,7 +9,7 @@ classdef TestRunner
         % The following are check properties that should be set depending on the test case.
         RunCheckAllEqual (1, 1) logical = true % Whether the checkAllEqual method should be run. Default = true.
         RunCheckCalls (1, 1) logical = true % Whether the checkCalls method should be run. Default = true.
-        RunCheckFilesClosed (1, 1) logical = false % Whether the checkFilesClosed method should be run. Default = false.
+        RunCheckFilesClosed (1, 1) logical = true % Whether the checkFilesClosed method should be run. Default = false.
         RunCheckImages char = '' % The name of the image for checkImages to check. If empty, it will not run. Default = ''.
         RunCheckPlots (1, 1) logical = false % Whether the checkPlots method should be run. Default = false.
         RunCheckTextFiles char = '' % The name of the text file for checkTextFiles to check. If empty, it will not run. Default = ''.
