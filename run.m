@@ -109,8 +109,7 @@ end
 % false, assume the image was created with the '_soln' suffix.
 if ~isempty(obj.RunCheckImages) && exist(obj.RunCheckImages, 'file')
     name = tempname;
-    copyfile(obj.RunCheckImages, name);
-    delete(obj.RunCheckImages);
+    movefile(obj.RunCheckImages, name);
     solnImage = name;
 else
     [file, ext] = strtok(obj.RunCheckImages, '.');
@@ -121,8 +120,7 @@ end
 % If false, assume the file was created with the '_soln' suffix.
 if ~isempty(obj.RunCheckTextFiles) && exist(obj.RunCheckTextFiles, 'file')
     name = tempname;
-    copyfile(obj.RunCheckTextFiles, name);
-    delete(obj.RunCheckTextFiles);
+    movefile(obj.RunCheckTextFiles, name);
     solnTextFile = name;
 else
     [file, ext] = strtok(obj.RunCheckTextFiles, '.');

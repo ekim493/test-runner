@@ -6,7 +6,7 @@ function [hasPassed, msg] = checkCalls(obj, funcFile)
 %   are present in the student's function, an error is thrown.
 %   
 %   Operations are defined the keywords that appear when the function iskeyword is called, and must be in all caps. 
-%   You can add additional operations by in the FunctioNListName file. It will run the final result through the 
+%   You can add additional operations by in the validFunctionList file. It will run the final result through the 
 %   testCase object using verifyTrue. 
 %   
 %   The following object properties can be used to modify the list of calls this function checks:
